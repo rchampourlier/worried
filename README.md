@@ -11,3 +11,6 @@ opening an alert for your app.
 
     PUSHBULLET_API_KEY=<your-key> foreman start
     
+Or you can create a `.env` file and use it with Foreman:
+
+    foreman start -e .env
