@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'pry'
+require File.expand_path('../../worried_app', __FILE__)
+
+Pry.start
