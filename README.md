@@ -29,3 +29,9 @@ You must then configure your alerting on NewRelic.
 4. Enter this as the webhook URL (replace "mydomain.com" with the domain
   you used to deploy the worried app, maybe "myworriedapp.herokuapp.com"):
   `http://mydomain.com/new_relic/push_bullet`.
+
+## Run Tests
+
+```
+bundle exec rspec spec
+```

@@ -4,11 +4,13 @@ require 'rack'
 
 $LOAD_PATH.unshift File.expand_path('../lib', __FILE__)
 require 'worried'
-require 'worried/push_bullet'
-require 'worried/new_relic'
+require 'worried/inputs/new_relic'
+require 'worried/transformers/new_relic_to_push_bullet'
+require 'worried/outputs/push_bullet'
 $LOAD_PATH.shift
 
 require 'sinatra'
+include Worried
 
 get '/status' do
   'ok'
@@ -16,16 +18,8 @@ end
 
 post '/new_relic/push_bullet' do
   body = request.body.read
-  data = Worried::NewRelic.parse(body)
-  if data.keys.include?('short_description')
-    title = data['short_description']
-    message =
-      data['long_description'] << '\n\n' <<
-      data['created_at']
-  else
-    title = 'Unknown message'
-    message = data
-  end
-  Worried::PushBullet.send_note title, message
+  data = Inputs::NewRelic.parse(body)
+  transformed = Transformers::NewRelicToPushBullet.transform(data)
+  Outputs::PushBullet.send_note transformed
   'ok'
 end
